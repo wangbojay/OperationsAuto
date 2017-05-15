@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}运维管理-仪表盘{% endblock %}
+{% block ui_active1 %}<a class="active" href="/">{% endblock %}
+{% block content %}
+    <div class="row state-overview">
+                  <div class="col-lg-3 col-sm-6">
+                      <section class="panel">
+                          <div class="symbol terques">
+                              <i class="fa fa-sitemap"></i>
+                          </div>
+                          <div class="value">
+                              <h1 class="count">
+                                  {{ online_project_count }}
+                              </h1>
+                              <p>项目数量</p>
+                          </div>
+                      </section>
+                  </div>
+                  <div class="col-lg-3 col-sm-6">
+                      <section class="panel">
+                          <div class="symbol red">
+                              <i class="fa fa-upload"></i>
+                          </div>
+                          <div class="value">
+                              <h1 class=" count2">
+                                  {{ online_server_count }}
+                              </h1>
+                              <p>线上服务器</p>
+                          </div>
+                      </section>
+                  </div>
+                  <div class="col-lg-3 col-sm-6">
+                      <section class="panel">
+                          <div class="symbol yellow">
+                              <i class="fa fa-foursquare"></i>
+                          </div>
+                          <div class="value">
+                              <h1 class=" count3">
+                                  {{ offline_server_count }}
+                              </h1>
+                              <p>空闲服务器</p>
+                          </div>
+                      </section>
+                  </div>
+                  <div class="col-lg-3 col-sm-6">
+                      <section class="panel">
+                          <div class="symbol blue">
+                              <i class="fa fa-clock-o"></i>
+                          </div>
+                          <div class="value">
+                              <h1 class=" count4">
+                                  0
+                              </h1>
+                              <p>定时任务</p>
+                          </div>
+                      </section>
+                  </div>
+              </div>
+              <!-- page start-->
+            <div class="col-sm-9" id="mg-2">
+                              <section class="panel">
+                              <header class="panel-heading">
+                                  月告警统计
+                             <span class="tools pull-right">
+                                <a href="javascript:;" class="fa fa-chevron-down"></a>
+                             </span>
+                              </header>
+                                  <div class="panel-body">
+                                     <div id="main1_alarm_month" style="height:400px;"></div>
+                                  </div>
+                              </section>
+                                </div>
+              <div class="col-lg-3" style="padding-left: 5px;">
+                              <!--widget start-->
+                              <section class="panel" style ="border:solid 1px #7087a3;">
+                                  <header class="panel-heading tab-bg-dark-navy-blue">
+                                      <ul class="nav nav-tabs nav-justified ">
+                                          <li class="active">
+                                              <a href="#popular" data-toggle="tab">
+                                                  事件
+                                              </a>
+                                          </li>
+                                          <li>
+                                              <a href="#comments" data-toggle="tab">
+                                                  警告
+                                              </a>
+                                          </li>
+                                          <li class="">
+                                              <a href="#recent" data-toggle="tab">
+                                                  任务
+                                              </a>
+                                          </li>
+                                      </ul>
+                                  </header>
+                                  <div class="panel-body">
+                                      <div class="tab-content tasi-tab">
+                                          <div class="tab-pane active" id="popular">
+                                              <article class="media">
+                                                  <a class="pull-left thumb p-thumb">
+                                                      <img src="{% static 'img/new.png' %}">
+                                                  </a>
+                                                  <div class="media-body">
+                                                      <a class=" p-head" href="#">Item One Tittle</a>
+                                                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                                  </div>
+                                              </article>
+                                              <article class="media">
+                                                  <a class="pull-left thumb p-thumb">
+                                                      <img src="{%  static 'img/new.png' %}">
+                                                  </a>
+                                                  <div class="media-body">
+                                                      <a class=" p-head" href="#">Item Two Tittle</a>
+                                                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                                  </div>
+                                              </article>
+                                              <article class="media">
+                                                  <a class="pull-left thumb p-thumb">
+                                                      <img src="{%  static 'img/new.png' %}">
+                                                  </a>
+                                                  <div class="media-body">
+                                                      <a class=" p-head" href="#">Item Three Tittle</a>
+                                                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                                  </div>
+                                              </article>
+                                          </div>
+                                          <div class="tab-pane" id="comments">
+                                              <article class="media">
+                                                  <a class="pull-left thumb p-thumb">
+                                                      <img src="{%  static 'img/new.png' %}">
+                                                  </a>
+                                                  <div class="media-body">
+                                                      <a class="cmt-head" href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a>
+                                                      <p> <i class="fa fa-clock-o"></i> 1 hours ago</p>
+                                                  </div>
+                                              </article>
+                                              <article class="media">
+                                                  <a class="pull-left thumb p-thumb">
+                                                      <img src="{%  static 'img/new.png' %}">
+                                                  </a>
+                                                  <div class="media-body">
+                                                      <a class="cmt-head" href="#">Nulla vel metus scelerisque ante sollicitudin commodo</a>
+                                                      <p> <i class="fa fa-clock-o"></i> 23 mins ago</p>
+                                                  </div>
+                                              </article>
+                                              <article class="media">
+                                                  <a class="pull-left thumb p-thumb">
+                                                      <img src="{%  static 'img/new.png' %}">
+                                                  </a>
+                                                  <div class="media-body">
+                                                      <a class="cmt-head" href="#">Donec lacinia congue felis in faucibus. </a>
+                                                      <p> <i class="fa fa-clock-o"></i> 15 mins ago</p>
+                                                  </div>
+                                              </article>
+                                          </div>
+                                          <div class="tab-pane " id="recent">
+                                              Recent Item goes here
+                                          </div>
+                                      </div>
+                                  </div>
+                              </section>
+                              <!--widget end-->
+                      </div>
+
+
+              <!-- page end-->
+
+{% endblock %}
+{% block added %}
+    <script>
+     var myChart1_main1_alarm_month = echarts.init(document.getElementById('main1_alarm_month'));
+        // 指定图表的配置项和数据
+        var option1_main1_alarm_month = {
+            tooltip: {},
+
+            legend: {
+                data:['Alarm']
+            },
+            xAxis: {
+                axisLabel:{
+
+                     },
+                data: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30],
+                boundaryGap : true
+            },
+            yAxis: {
+
+                axisLabel : {
+                   formatter: function (value)
+                       {
+                           return value + "次";
+                          }
+               }
+            },
+            series: [{
+                name: 'Alarm',
+                type: 'bar',
+                barWidth: 50,
+                itemStyle: {
+                    normal: {
+                        color:'#34d591'
+                    }
+                },
+                barStyle:{normal: {
+                    color: '#34d591'
+                    }},
+                smooth:true,
+                data:[1,5,8,9,4,5,67,12,123,55,1,4,8,5,3,2,1,6,8,3,4,6,7,8,3,4,5,67,23,21]
+            }]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart1_main1_alarm_month.setOption(option1_main1_alarm_month);
+     </script>
+{% endblock %}

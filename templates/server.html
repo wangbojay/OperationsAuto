@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}运维管理-服务器管理{% endblock %}
+{% block css %}
+    <link href="{% static 'assets/advanced-datatable/media/css/demo_page.css'%}" rel="stylesheet" />
+    <link href="{% static 'assets/advanced-datatable/media/css/demo_table.css'%}" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'assets/data-tables/DT_bootstrap.css'%}" />
+{% endblock %}
+{% block ui_active3 %}<a class="active" href="/server/" >{% endblock %}
+{% block content %}
+    <div class="row">
+                <div class="col-sm-12">
+              <section class="panel">
+              <header class="panel-heading">
+                  服务器
+             <span class="tools pull-right">
+                 <a href="javascript:;"><button type="button" class="btn btn-info btn-sm" onclick="myupdate()"><i class="fa fa-refresh"></i>  更新服务器列表</button></a>
+                <a href="javascript:;" class="fa fa-chevron-down"></a>
+                <a href="javascript:;" class="fa fa-times"></a>
+
+             </span>
+              </header>
+              <div class="panel-body">
+              <div class="adv-table">
+              <table class="display table table-bordered table-striped" id="dynamic-table">
+              <thead>
+              <tr>
+                  <th>序号</th>
+                  <th>IP地址</th>
+                  <th class="hidden-phone">所属项目</th>
+                  <th class="hidden-phone">服务器ID</th>
+                  <th class="hidden-phone">服务器角色</th>
+                  <th class="hidden-phone">CPU</th>
+                  <th class="hidden-phone">内存</th>
+                  <th class="hidden-phone">磁盘</th>
+                  <th class="hidden-phone">操作系统</th>
+                  <th class="hidden-phone">状态</th>
+                  <th class="hidden-phone">操作</th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for s in server_list %}
+              <tr class="gradeX">
+                  <td>{{ s.id }}</td>
+                  <td>{{ s.server_ip |cut:"'"|cut:"[" |cut:"]"  }}</td>
+                  <td class="hidden-phone">{{ s.server_project_name }}</td>
+                  <td class="center hidden-phone">{{ s.server_name }}</td>
+                  <td class="center hidden-phone">{{ s.server_role }}</td>
+                  <td class="center hidden-phone">{{ s.server_cpu }}</td>
+                  <td class="center hidden-phone">{{ s.server_memory }}</td>
+                  <td class="center hidden-phone">{{ s.server_disk }}</td>
+                  <td class="center hidden-phone">{{ s.server_system }}</td>
+                  <td class="center hidden-phone">{% ifnotequal server_status s.server_project_name %}<span class="label label-success">online</span>{% else %}<span class="label label-inverse">offline</span>{% endifnotequal %}</td>
+                  <td class="center hidden-phone"><button type="button" class="btn btn-danger dropdown-toggle btn-sm" data-toggle="modal" href="#myModaladd">分配</button></td>
+              </tr>{% endfor %}
+              </tbody>
+              </table>
+               </div>
+              </div>
+              </section>
+              </div>
+              </div>
+                <div class="modal fade modal-dialog-center in" id="myModalupdate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                  <div class="modal-dialog modal-sm">
+                                      <div class="modal-content-wrap">
+                                      <div class="modal-content">
+                                          <div class="modal-header">
+                                              <h4 class="modal-title">更新ing</h4>
+                                          </div>
+                                          <div class="modal-body">
+                                              <br>
+                                              <div class="progress progress-striped active progress-sm">
+                                                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                              </div>
+                                          </div>
+                                          </div>
+                                      </div>
+                                      </div>
+                                  </div>
+                              </div>
+                 <div class="modal fade modal-dialog-center in" id="myModaladd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                  <div class="modal-dialog modal-sm">
+                                      <div class="modal-content-wrap">
+                                      <div class="modal-content">
+                                          <div class="modal-header">
+                                              <h5 class="modal-title">你确定要分配此台服务器么？</h5>
+                                          </div>
+                                          <form class="form-group">
+                                          <div class="modal-body">
+                                              <br>
+                                               <div style="vertical-align: middle;display: inline;font-size: 15px;text-align: left"><label class="col-sm-3 col-sm-4 control-label"><strong>项目</strong></label><select class="form-control  m-bot15" style="width: 50%">
+                                                    <option>wartime</option>
+                                                </select></div>
+                                                <input name="enter" value="yes" hidden>
+                                          </div>
+                                          <div class="modal-footer">
+                                              <button data-dismiss="modal" class="btn btn-default btn-sm" type="button">Close</button>
+                                              <button class="btn btn-success btn-sm" type="submit">确定</button>
+                                          </div>
+                                          </form>
+                                      </div>
+                                      </div>
+                                  </div>
+                              </div>
+{% endblock %}
+{% block js_file %}
+    <script src="{% static 'js/jquery-ui-1.9.2.custom.min.js'%}"></script>
+    <script src="{% static 'js/jquery-migrate-1.2.1.min.js'%}"></script>
+     <script type="text/javascript" language="javascript" src="{% static 'assets/advanced-datatable/media/js/jquery.dataTables.js'%}"></script>
+    <script type="text/javascript" src="{% static 'assets/data-tables/DT_bootstrap.js'%}"></script>
+    <script src="{% static 'js/respond.min.js'%}" ></script>
+    <script src="{% static 'js/dynamic_table_init.js'%}"></script>
+{% endblock %}
+{% block added %}
+<script>
+    function myupdate(){
+    $('#myModalupdate').modal({backdrop: 'static', keyboard: false});
+     setTimeout("location.reload()",5000);
+}
+</script>
+{% endblock %}

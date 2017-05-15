@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load staticfiles %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{%  static 'img/favicon.png' %}">
+
+    <title>{% block title %}运维 - 管理后台{%  endblock %}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{%  static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{%  static 'css/bootstrap-reset.css' %}" rel="stylesheet">
+    <!--external css-->
+    <link href="{%  static 'assets/font-awesome/css/font-awesome.css' %}" rel="stylesheet" />
+
+
+    <!-- Custom styles for this template -->
+    <link href="{%  static 'css/style.css' %}" rel="stylesheet">
+    <link href="{%  static 'css/style-responsive.css' %}" rel="stylesheet" />
+   {% block css %}{%  endblock %}
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
+    <!--[if lt IE 9]>
+      <script src="{%  static 'js/html5shiv.js' %}"></script>
+      <script src="{%  static 'js/respond.min.js' %}"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+  <section id="container" >
+      <!--header start-->
+      <header class="header white-bg">
+              <div class="sidebar-toggle-box">
+                  <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+              </div>
+            <!--logo start-->
+            <a href="/" class="logo">Operations<span>Auto</span></a>
+            <!--logo end-->
+            <div class="nav notify-row" id="top_menu">
+                <!--  notification start -->
+                <ul class="nav top-menu">
+                    <!-- settings start -->
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <i class="fa fa-tasks"></i>
+                            <span class="badge bg-success">1</span>
+                        </a>
+                        <ul class="dropdown-menu extended tasks-bar">
+                            <div class="notify-arrow notify-arrow-green"></div>
+                            <li>
+                                <p class="green">你有1个任务</p>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <div class="task-info">
+                                        <div class="desc">文件备份</div>
+                                        <div class="percent">40%</div>
+                                    </div>
+                                    <div class="progress progress-striped">
+                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                                            <span class="sr-only">40% Complete (success)</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- settings end -->
+                    <!-- inbox dropdown start-->
+                    <li id="header_inbox_bar" class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <i class="fa fa-envelope-o"></i>
+                            <span class="badge bg-important">1</span>
+                        </a>
+                        <ul class="dropdown-menu extended inbox">
+                            <div class="notify-arrow notify-arrow-red"></div>
+                            <li>
+                                <p class="red">你有 1 条信息</p>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="photo"><img alt="avatar" src="{%  static 'img/new.png' %}"></span>
+                                    <span class="subject">
+                                    <span class="from">系统通知</span>
+                                    <span class="time">刚才</span>
+                                    </span>
+                                    <span class="message">
+                                        一项任务已执行完毕
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- inbox dropdown end -->
+                    <!-- notification dropdown start-->
+                    <li id="header_notification_bar" class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+
+                            <i class="fa fa-bell-o"></i>
+                            <span class="badge bg-warning">1</span>
+                        </a>
+                        <ul class="dropdown-menu extended notification">
+                            <div class="notify-arrow notify-arrow-yellow"></div>
+                            <li>
+                                <p class="yellow">你有 1 项告警事件</p>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="label label-info"><i class="fa fa-bullhorn"></i></span>
+                                    一台服务器网络超时
+                                    <span class="small italic">10 分钟</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- notification dropdown end -->
+                </ul>
+                <!--  notification end -->
+            </div>
+            <div class="top-nav ">
+                <!--search & user info start-->
+                <ul class="nav pull-right top-menu">
+                    <li>
+                        <div class="row m-bot15">
+                          <div class="col-sm-6 text-center">
+                              <input type="checkbox" checked="" data-toggle="switch" />
+                          </div>
+                          <div class="col-sm-6 text-center">
+                              <input type="checkbox" data-toggle="switch" />
+                          </div>
+                      </div>
+                    </li>
+                    <!-- user login dropdown start-->
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <img alt="" src="{% static 'img/avatar1_small.jpg' %}">
+                            <span class="username">{{ uname }}</span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu extended logout">
+                            <li><a href="/accounts/logout/"><i class="fa fa-key"></i> 登出</a></li>
+                        </ul>
+                    </li>
+                    <!-- user login dropdown end -->
+                </ul>
+                <!--search & user info end-->
+            </div>
+        </header>
+      <!--header end-->
+      <!--sidebar start-->
+      <aside>
+          <div id="sidebar"  class="nav-collapse ">
+              <!-- sidebar menu start-->
+              <ul class="sidebar-menu" id="nav-accordion">
+                  <li>
+                      {% block ui_active1 %}<a  href="/">{% endblock %}
+                          <i class="fa fa-dashboard"></i>
+                          <span>仪表盘</span>
+                      </a>
+                  </li>
+                  <li class="sub-menu">
+                      {% block ui_active_monitor %}<a href="javascript:;" >{% endblock %}
+                          <i class="fa fa-bar-chart-o"></i>
+                          <span>监控图表/数据</span>
+                      </a>
+                    <ul class="sub">
+                      <li {% block monitor_ul1 %}{% endblock %}><a   href="/monitor_table" >数据表</a></li>
+                      <li {% block monitor_ul2%}{% endblock %}><a   href="/monitor_graph">图形</a></li>
+                     </ul>
+                  </li>
+                   <li class="sub-menu">
+                      {% block ui_active2 %}<a href="javascript:;" >{% endblock %}
+                          <i class="fa fa-gamepad"></i>
+                          <span>项目管理</span>
+                      </a>
+                      <ul class="sub">
+                          {% for i in project_name %}
+                          <li id="{{ i.id }}"><a  href="/pj?projectname={{ i.name }}">{{ i.name }}</a></li>
+                          {% endfor %}
+                      </ul>
+                  </li>
+                    <li>
+                      {% block ui_active3 %}<a  href="/server">{% endblock %}
+                          <i class="fa fa-cogs"></i>
+                          <span>服务器管理</span>
+                      </a>
+                  </li>
+                     <li>
+                      {% block ui_active4 %}<a  href="/database">{% endblock %}
+                          <i class="fa fa-stack-exchange"></i>
+                          <span>数据库管理</span>
+                      </a>
+                  </li>
+                    <li class="sub-menu">
+                      {% block ui_active5 %}<a  href="javascript:;">{% endblock %}
+                          <i class="fa fa-tasks"></i>
+                          <span>作业</span>
+                      </a>
+                        <ul class="sub">
+                          {% block ui_active6_1 %}<li ><a  href="/quick_task">{% endblock %}快速作业</a></li>
+                          {% block ui_active6_2 %}<li ><a  href="/custom_task">{% endblock %}自定义操作</a></li>
+                      </ul>
+                  </li>
+                     <li>
+                      {% block ui_active7 %}<a  href="/opera_log">{% endblock %}
+                          <i class="fa fa-list-alt"></i>
+                          <span>操作日志</span>
+                      </a>
+                  </li>
+                  <li>
+                      <a  href="/accounts/logout/">
+                          <i class="fa fa-user"></i>
+                          <span>登出</span>
+                      </a>
+                  </li>
+              </ul>
+              <!-- sidebar menu end-->
+          </div>
+      </aside>
+      <!--sidebar end-->
+      <!--main content start-->
+      <section id="main-content">
+          <section class="wrapper">
+              <!--state overview start-->
+            {% block content %}{% endblock %}
+
+
+          </section>
+      </section>
+      <!--main content end-->
+
+      <!--footer start-->
+      <footer class="site-footer">
+          <div class="text-center">
+              2017 &copy; Power By Wangbo.
+              <a href="#" class="go-top">
+                  <i class="fa fa-angle-up"></i>
+              </a>
+          </div>
+      </footer>
+      <!--footer end-->
+  </section>
+    <!-- js placed at the end of the document so the pages load faster -->
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery.scrollTo.min.js' %}"></script>
+    <script src="{% static 'js/jquery.nicescroll.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/jquery-ui-1.9.2.custom.min.js' %}"></script>
+    <script class="include" type="text/javascript" src="{% static 'js/jquery.dcjqaccordion.2.7.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/echarts.min.js' %}"></script>
+    <!--custom switch-->
+    <script src="{% static 'js/bootstrap-switch.js' %}"></script>
+    <script src="{% static 'js/respond.min.js' %}" ></script>
+   {% block js_file %}{%  endblock %}
+    <!--common script for all pages-->
+    <script src="{% static 'js/common-scripts.js' %}"></script>
+  <!--script for this page-->
+    <script src="{% static 'js/form-component.js' %}"></script>
+  <script>
+
+  </script>
+{% block  added%}{% endblock %}
+  </body>
+</html>

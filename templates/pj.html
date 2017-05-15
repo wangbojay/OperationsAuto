@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}运维管理-项目管理{% endblock %}
+{% block css %}
+    <link href="{% static 'assets/advanced-datatable/media/css/demo_page.css'%}" rel="stylesheet" />
+    <link href="{% static 'assets/advanced-datatable/media/css/demo_table.css'%}" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'assets/data-tables/DT_bootstrap.css'%}" />
+{% endblock %}
+{% block ui_active2%}<a class="active" href="javascript:;" >{% endblock %}
+{% block js_server_active %}$("#{{ project_name_r }}").addClass('active');{% endblock %}
+{% block content %}
+    <div class="row">
+                <div class="col-sm-12">
+              <section class="panel">
+              <header class="panel-heading">
+                  {{ project_name_n }}服务器
+             <span class="tools pull-right">
+                <a href="javascript:;" class="fa fa-chevron-down"></a>
+                <a href="javascript:;" class="fa fa-times"></a>
+             </span>
+              </header>
+              <div class="panel-body">
+              <div class="adv-table">
+              <table class="display table table-bordered table-striped" id="dynamic-table">
+              <thead>
+              <tr>
+                  <th>序号</th>
+                  <th>IP地址</th>
+                  <th class="hidden-phone">所属项目</th>
+                  <th class="hidden-phone">服务器ID</th>
+                  <th class="hidden-phone">服务器角色</th>
+                  <th class="hidden-phone">CPU</th>
+                  <th class="hidden-phone">内存</th>
+                  <th class="hidden-phone">磁盘</th>
+                  <th class="hidden-phone">操作系统</th>
+                  <th class="hidden-phone">状态</th>
+                  <th class="hidden-phone">操作</th>
+              </tr>
+              </thead>
+              <tbody>
+             {% for s in server_list %}
+              <tr class="gradeX">
+                  <td>{{ s.id }}</td>
+                  <td>{{ s.server_ip |cut:"'"|cut:"[" |cut:"]"  }}</td>
+                  <td class="hidden-phone">{{ s.server_project_name }}</td>
+                  <td class="center hidden-phone">{{ s.server_name }}</td>
+                  <td class="center hidden-phone">{{ s.server_role }}</td>
+                  <td class="center hidden-phone">{{ s.server_cpu }}</td>
+                  <td class="center hidden-phone">{{ s.server_memory }}</td>
+                  <td class="center hidden-phone">{{ s.server_disk }}</td>
+                  <td class="center hidden-phone">{{ s.server_system }}</td>
+                  <td class="center hidden-phone">{% ifnotequal server_status s.server_project_name %}<span class="label label-success">online</span>{% else %}<span class="label label-inverse">offline</span>{% endifnotequal %}</td>
+                  <td class="center hidden-phone"><button type="button" class="btn btn-danger dropdown-toggle btn-sm" onclick="mydel()">删除</button></td>
+              </tr>{% endfor %}
+              </tbody>
+              </table>
+               </div>
+              </div>
+              </section>
+              </div>
+              </div>
+               <div class="modal fade" id="myModaldel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                  <div class="modal-dialog modal-sm">
+                                      <div class="modal-content">
+                                          <div class="modal-header">
+                                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                              <h4 class="modal-title">下线</h4>
+                                          </div><form method="get" action="/pj/">
+                                          <div class="modal-body">
+
+                                              你确定要下线/删除此台服务器么？
+                                                <input name="projectname" value="{{ project_name_n }}" hidden>
+                                                <input name="enter" value="yes" hidden>
+                                          </div>
+                                          <div class="modal-footer">
+                                              <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
+                                              <button class="btn btn-success" type="submit">确定</button>
+                                          </div>
+                                          </form>
+                                      </div>
+                                  </div>
+                              </div>
+{% endblock %}
+{% block js_file %}
+    <script src="{% static 'js/jquery-ui-1.9.2.custom.min.js'%}"></script>
+    <script src="{% static 'js/jquery-migrate-1.2.1.min.js'%}"></script>
+     <script type="text/javascript" language="javascript" src="{% static 'assets/advanced-datatable/media/js/jquery.dataTables.js'%}"></script>
+    <script type="text/javascript" src="{% static 'assets/data-tables/DT_bootstrap.js'%}"></script>
+    <script src="{% static 'js/respond.min.js'%}" ></script>
+    <script src="{% static 'js/dynamic_table_init.js'%}"></script>
+{% endblock %}
+{% block added %}
+<script>
+    function mydel(){
+    $('#myModaldel').modal({backdrop: 'static', keyboard: false});
+}
+</script>
+{% endblock %}

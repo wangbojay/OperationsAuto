@@ -1,0 +1,429 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}运维管理-监控数据/图表{% endblock %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/bootstrap-datepicker/css/datepicker.css'%}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/bootstrap-timepicker/compiled/timepicker.css'%}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/bootstrap-colorpicker/css/colorpicker.css'%}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/bootstrap-daterangepicker/daterangepicker-bs3.css'%}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/bootstrap-datetimepicker/css/datetimepicker.css'%}" />
+{% endblock %}
+{% block ui_active_monitor %}<a class="active" href="" >{% endblock %}
+{% block monitor_ul2%}class="active"{% endblock %}
+{% block content %}
+                <div class="row">
+                 <div class="col-sm-12">
+                 <section class="panel">
+              <header style="height: 55px" class="panel-heading">
+                  <form method="get" action="/monitor_graph">
+                      <div  style="margin-top: 7px" class="col-sm-1">图形筛选</div>
+                         <div class="col-md-2"> <select class="form-control m-bot15" name="project_name" id="select_pj" onchange="select_on_pj()">
+                                                          <option>请选择</option>{% for p in project_name %}<option>{{ p.name }}</option>{% endfor %}
+                                                      </select></div>
+                      <div class="col-md-2"> <select class="form-control m-bot15" style="display: none" name="server_name" id="server_name_select" onchange="sec1()">
+                                                      </select></div>
+                               <div class="col-md-2"> <select class="form-control m-bot15" style="display: none" name="project_genre" id="project_genre">
+                                              {% for m in mg_list %}<option>{{ m.mg_name }}</option>{% endfor %}
+                                          </select></div>
+                            <div class="col-md-4" style="display: none" id="time_range">
+                              <div class=" input-group input-large ">
+                                  <input size="16" type="text"  readonly class="form_datetime form-control" name="time1" id="range1" onchange="sub_show()">
+                                  <span class="input-group-addon">至</span>
+                                  <input size="16" type="text"  readonly class="form_datetime form-control" name="time2" id="range2" onchange="sub_show()">
+                              </div></div>
+                      <button  style="display: none" class="btn btn-success" type="submit" id="submit1" >确定</button>
+                    </form>
+              </header>
+              </section>
+                 </div>
+                </div>
+                {% for s in data_table_monitor %}
+                <div class="col-sm-6" id="mg-2">
+              <section class="panel">
+              <header class="panel-heading">
+                  {{ s.6 }}/{{ s.7 }}-CPU/IO wait
+             <span class="tools pull-right">
+                <a href="javascript:;" class="fa fa-chevron-down"></a>
+             </span>
+              </header>
+                  <div class="panel-body">
+                     <div id="main1_{{ s.6 }}_{{ s.7 }}" style="height:400px;"></div>
+                  </div>
+              </section>
+                </div>
+              <div class="col-sm-6" id="mg-3">
+              <section class="panel">
+              <header class="panel-heading">
+                  {{ s.6 }}/{{ s.7 }}-内存/SWAP
+             <span class="tools pull-right">
+                <a href="javascript:;" class="fa fa-chevron-down"></a>
+             </span>
+              </header>
+                  <div class="panel-body">
+                     <div id="main2_{{ s.6 }}_{{ s.7 }}" style="height:400px;"></div>
+                  </div>
+              </section>
+                </div>
+            <div class="col-sm-6" id="mg-4">
+              <section class="panel">
+              <header class="panel-heading">
+                  {{ s.6 }}/{{ s.7 }}-网卡流量
+             <span class="tools pull-right">
+                <a href="javascript:;" class="fa fa-chevron-down"></a>
+             </span>
+              </header>
+                  <div class="panel-body">
+                     <div id="main3_{{ s.6 }}_{{ s.7 }}" style="height:400px;"></div>
+                  </div>
+              </section>
+                </div>
+            <div class="col-sm-6" id="mg-5">
+              <section class="panel">
+              <header class="panel-heading">
+                  {{ s.6 }}/{{ s.7 }}-磁盘使用
+             <span class="tools pull-right">
+                <a href="javascript:;" class="fa fa-chevron-down"></a>
+             </span>
+              </header>
+                  <div class="panel-body">
+                     <div id="main4_{{ s.6 }}_{{ s.7 }}" style="height:400px;"></div>
+                  </div>
+              </section>
+                </div>
+    <div class="col-sm-6" id="mg-6">
+              <section class="panel">
+              <header class="panel-heading">
+                  {{ s.6 }}/{{ s.7 }}-系统负载
+             <span class="tools pull-right">
+                <a href="javascript:;" class="fa fa-chevron-down"></a>
+             </span>
+              </header>
+                  <div class="panel-body">
+                     <div id="main5_{{ s.6 }}_{{ s.7 }}" style="height:400px;"></div>
+                  </div>
+              </section>
+                </div>
+        {% endfor %}
+
+
+{% endblock %}
+{% block js_file %}
+  <script type="text/javascript" src="{% static 'assets/bootstrap-datepicker/js/bootstrap-datepicker.js' %}"></script>
+  <script type="text/javascript" src="{% static 'assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js' %}"></script>
+  <script type="text/javascript" src="{% static 'assets/bootstrap-daterangepicker/moment.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'assets/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+  <script type="text/javascript" src="{% static 'assets/bootstrap-colorpicker/js/bootstrap-colorpicker.js' %}"></script>
+  <script type="text/javascript" src="{% static 'assets/bootstrap-timepicker/js/bootstrap-timepicker.js' %}"></script>
+    <script src="{% static 'assets/chart-master/Chart.js' %}"></script>
+{% endblock %}
+{% block added %}
+<script>
+$(document).ready(function(){
+	            if( {{ server_genre }} == 2 ){$("#mg-3").hide();$("#mg-4").hide();$("#mg-5").hide();$("#mg-6").hide()}
+	            else if ( {{ server_genre }} == 3 ){$("#mg-2").hide();$("#mg-4").hide();$("#mg-5").hide();$("#mg-6").hide()}
+	            else if ( {{ server_genre }} == 4 ){$("#mg-3").hide();$("#mg-2").hide();$("#mg-5").hide();$("#mg-6").hide()}
+	            else if ( {{ server_genre }} == 5 ){$("#mg-3").hide();$("#mg-4").hide();$("#mg-2").hide();$("#mg-6").hide()}
+	            else if ( {{ server_genre }} == 6 ){$("#mg-3").hide();$("#mg-4").hide();$("#mg-5").hide();$("#mg-2").hide()}
+                });
+</script>
+<script>
+    {% for t in data_table_monitor %}
+  var myChart1_{{ t.6 }}_{{ t.7 }} = echarts.init(document.getElementById('main1_{{ t.6 }}_{{ t.7 }}'));
+        // 指定图表的配置项和数据
+        var option1_{{ t.6 }}_{{ t.7 }} = {
+            tooltip: {},
+            title:{text:"IP:{{ t.8|cut:"["|cut:"]" }}",textStyle:{
+                color:'#f61d49',
+                fontSize:13,
+                fontWeight:'bold'
+            }},
+            legend: {
+                data:['CPU','IO wait']
+            },
+            xAxis: {
+                axisLabel:{
+                         interval:'auto',
+                         rotate:50,
+                         margin:10
+                     },
+                data: {{ t.5|safe }},
+                boundaryGap : false
+            },
+            yAxis: {
+                max : 100,
+                axisLabel : {
+                   formatter: function (value)
+                       {
+                           return value + "%";
+                          }
+               }
+            },
+            series: [{
+                name: 'CPU',
+                type: 'line',
+                itemStyle: {
+                    normal: {
+                        color:'#0e33d5'
+                    }
+                },
+                lineStyle:{normal: {
+                    color: '#0e33d5'
+                    }},
+                smooth:true,
+                data: {{ t.0|safe }}
+            },
+            {
+                name: 'IO wait',
+                type: 'line',
+                itemStyle: {
+                    normal: {
+                        color:'#3ecfd5'
+                    }
+                },
+                lineStyle:{
+                    normal: {
+                    color: '#3ecfd5'
+                    }
+                    },
+                smooth:true,
+                data: {{ t.3|safe }}
+            }]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart1_{{ t.6 }}_{{ t.7 }}.setOption(option1_{{ t.6 }}_{{ t.7 }});
+
+        var myChart2_{{ t.6 }}_{{ t.7 }} = echarts.init(document.getElementById('main2_{{ t.6 }}_{{ t.7 }}'));
+        // 指定图表的配置项和数据
+        var option2_{{ t.6 }}_{{ t.7 }} = {
+            tooltip: {},
+            title:{text:"IP:{{ t.8|cut:"["|cut:"]" }}",textStyle:{
+                color:'#f61d49',
+                fontSize:13,
+                fontWeight:'bold'
+            }},
+            legend: {
+                data:['内存', 'Swap']
+            },
+            xAxis: {
+                axisLabel:{
+                         interval:'auto',
+                         rotate:50,
+                         margin:10
+                     },
+                data: {{ t.5|safe }},
+                boundaryGap : false
+            },
+            yAxis: {
+                max : 100,
+                axisLabel : {
+                   formatter: function (value)
+                       {
+                           return value + "%";
+                          }
+               }
+            },
+            series: [{
+                name: '内存',
+                type: 'line',
+                lineStyle:{normal: {
+                    color: '#f36885'
+                    }},
+                smooth:true,
+                itemStyle: {normal: {color:'#f36885',areaStyle: {type: 'default'}}},
+                data: {{ t.1|safe }}
+            },
+            {
+                name: 'Swap',
+                type: 'line',
+                lineStyle:{normal: {
+                    color: '#f3d749'
+                    }},
+                smooth:true,
+                itemStyle: {normal: {color: '#f3d749',areaStyle: {type: 'default'}}},
+                data: {{ t.2|safe }}
+            }]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart2_{{ t.6 }}_{{ t.7 }}.setOption(option2_{{ t.6 }}_{{ t.7 }});
+
+        var myChart3_{{ t.6 }}_{{ t.7 }} = echarts.init(document.getElementById('main3_{{ t.6 }}_{{ t.7 }}'));
+        // 指定图表的配置项和数据
+        var option3_{{ t.6 }}_{{ t.7 }}= {
+            tooltip: {},
+            title:{text:"IP:{{ t.8|cut:"["|cut:"]" }}",textStyle:{
+                color:'#f61d49',
+                fontSize:13,
+                fontWeight:'bold'
+            }},
+            legend: {
+                data:[{% for nt in t.10 %}'{{ nt.0 }}下行','{{ nt.0 }}上行',{% endfor %}]
+            },
+            xAxis: {
+                axisLabel:{
+                         interval:'auto',
+                         rotate:50,
+                         margin:10
+                     },
+                data: {{ t.5|safe  }},
+                boundaryGap : false
+            },
+            yAxis: {
+                axisLabel : {
+                   formatter: function (value)
+                       {
+                           return value + "KB/s";
+                          }
+               }
+            },
+            series: [{% for nt_D in t.10 %}{
+                name: '{{ nt_D.0 }}下行',
+                type: 'line',
+                lineStyle:{normal: {
+                    color: '#33f3a0'
+                    }},
+                smooth:true,
+                itemStyle: {normal: {color: '#33f3a0',areaStyle: {type: 'default'}}},
+                data: {{ nt_D.1|safe }}
+            },
+            {
+                name: '{{ nt_D.0 }}上行',
+                type: 'line',
+                lineStyle:{normal: {
+                    color: '#c0f340'
+                    }},
+                smooth:true,
+                itemStyle: {normal: {color: '#c0f340',areaStyle: {type: 'default'}}},
+                data: {{ nt_D.2|safe }}
+            }{% endfor %}]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart3_{{ t.6 }}_{{ t.7 }}.setOption(option3_{{ t.6 }}_{{ t.7 }});
+
+        var myChart4_{{ t.6 }}_{{ t.7 }} = echarts.init(document.getElementById('main4_{{ t.6 }}_{{ t.7 }}'));
+        // 指定图表的配置项和数据
+        var option4_{{ t.6 }}_{{ t.7 }}= {
+            tooltip: {},
+            title:{text:"IP:{{ t.8|cut:"["|cut:"]" }}",textStyle:{
+                color:'#f61d49',
+                fontSize:13,
+                fontWeight:'bold'
+            }},
+            legend: {
+                data:[{% for i in t.9 %}'{{ i.0|safe }}',{% endfor %}]
+            },
+            xAxis: {
+                axisLabel:{
+                         interval:'auto',
+                         rotate:50,
+                         margin:10
+                     },
+                data: {{ t.5|safe }},
+                boundaryGap : false
+            },
+            yAxis: {
+                max : 100,
+                axisLabel : {
+                   formatter: function (value)
+                       {
+                           return value + "%";
+                          }
+               }
+            },
+            series: [{% for o in t.9 %}{
+                name: '{{ o.0|safe }}',
+                type: 'line',
+                smooth:true,
+                itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                data:{{ o.1|safe }}
+            },{% endfor %}]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart4_{{ t.6 }}_{{ t.7 }}.setOption(option4_{{ t.6 }}_{{ t.7 }});
+
+        var myChart5_{{ t.6 }}_{{ t.7 }} = echarts.init(document.getElementById('main5_{{ t.6 }}_{{ t.7 }}'));
+        // 指定图表的配置项和数据
+        var option5_{{ t.6 }}_{{ t.7 }}= {
+            tooltip: {},
+            title:{text:"IP:{{ t.8|cut:"["|cut:"]" }}",textStyle:{
+                color:'#f61d49',
+                fontSize:13,
+                fontWeight:'bold'
+            }},
+            legend: {
+                data:['负载']
+            },
+            xAxis: {
+                axisLabel:{
+                         interval:'auto',
+                         rotate:45,
+                         margin:10
+                     },
+                data:{{ t.5|safe  }},
+                boundaryGap : false
+            },
+            yAxis: {
+            },
+            series: [
+            {
+                name: '负载',
+                type: 'line',
+                lineStyle:{normal: {
+                    color: '#6ebdff'
+                    }},
+                smooth:true,
+                itemStyle: {normal: {color: '#6ebdff',areaStyle: {type: 'default'}}},
+                data: {{ t.4|safe  }}
+            }]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart5_{{ t.6 }}_{{ t.7 }}.setOption(option5_{{ t.6 }}_{{ t.7 }});
+    {% endfor %}
+
+ </script>
+<script>
+         function select_on_pj(){
+            var pj_list = $("#select_pj").find("option:selected").text();
+            $.ajax({
+                type: 'get',
+                url: "monitor_graph_pj_select?project_name="+pj_list,
+                dateType: 'json',
+                success: function (data) {
+                    var userlist_id = document.getElementById("server_name_select");
+                    for( var i = userlist_id.options.length-1;i>-1;i--){
+                        userlist_id[i] = null;
+                }
+                function getJsonObjLength(objson) {
+                    var Length = 0;
+                    for (var item in objson) {
+                      Length++;
+                    }
+                    return Length;
+                  }
+                var count = getJsonObjLength(data);
+                if(count != 0) {
+                $("#server_name_select").show();
+                $("#project_genre").show();
+                $.each(data,function(i,n){
+                    var opt = "<option>" + n.server_name +"</option>";
+                    $("#server_name_select").append(opt);
+                    $("#server_name_select").val("");
+                })
+                }
+                else{$("#server_name_select").hide();$("#project_genre").hide();$("#time_range").hide();}
+            }
+            });
+        }
+
+        function sec1() {
+            $("#time_range").show();
+        }
+
+         function sub_show() {
+              var pj_list = $("#range1").val();
+              var pj_list2 = $("#range2").val();
+              var start_time = new Date(pj_list.replace("-", "/").replace("-", "/"));
+              var end_time=new Date(pj_list2.replace("-", "/").replace("-", "/"));
+              if(pj_list != ""  && pj_list2 != "" && end_time > start_time){$("#submit1").show();}
+        }
+</script>
+{% endblock %}

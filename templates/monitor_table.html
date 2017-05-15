@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}运维管理-监控数据/图表{% endblock %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/bootstrap-datepicker/css/datepicker.css'%}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/bootstrap-timepicker/compiled/timepicker.css'%}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/bootstrap-colorpicker/css/colorpicker.css'%}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/bootstrap-daterangepicker/daterangepicker-bs3.css'%}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/bootstrap-datetimepicker/css/datetimepicker.css'%}" />
+    <link href="{% static 'assets/advanced-datatable/media/css/demo_page.css'%}" rel="stylesheet" />
+    <link href="{% static 'assets/advanced-datatable/media/css/demo_table.css'%}" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'assets/data-tables/DT_bootstrap.css'%}" />
+{% endblock %}
+{% block ui_active_monitor %}<a class="active" href="/monitor/" >{% endblock %}
+{% block monitor_ul1%}class="active"{% endblock %}
+{% block content %}
+    <div class="row">
+                <div class="col-sm-12">
+              <section class="panel">
+              <header class="panel-heading">
+                  服务器监控数据
+             <span class="tools pull-right">
+                <a href="javascript:;" class="fa fa-chevron-down"></a>
+                <a href="javascript:;" class="fa fa-times"></a>
+
+             </span>
+              </header>
+              <div class="panel-body">
+              <div class="adv-table">
+              <table class="display table table-bordered table-striped" id="dynamic-table">
+              <thead>
+              <tr>
+                  <th>IP地址</th>
+                  <th class="hidden-phone">所属项目</th>
+                  <th class="hidden-phone">服务器ID</th>
+                  <th class="hidden-phone">识别码</th>
+                  <th class="hidden-phone">运行时间</th>
+                   <th class="hidden-phone">系统负载</th>
+                  <th class="hidden-phone">CPU使用率</th>
+                  <th class="hidden-phone">内存使用率</th>
+                  <th class="hidden-phone">Swap使用率</th>
+                  <th class="hidden-phone">磁盘使用率</th>
+                  <th class="hidden-phone">I/O wait</th>
+                  <th class="hidden-phone">Zombie</th>
+                  <th class="hidden-phone">网卡流量(下行/上行)</th>
+                  <th class="hidden-phone">更新时间</th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for s in monitor_data_list %}
+              <tr class="gradeX">
+                  <td>{{ s.1 |cut:"[" |cut:"]"}}</td>
+                  <td>{{ s.14 }}</td>
+                  <td class="hidden-phone">{{ s.2 }}</td>
+                  <td class="center hidden-phone">{{ s.13 }}</td>
+                  <td class="center hidden-phone">{{ s.11 }}</td>
+                  <td class="center hidden-phone">{{ s.4}}</td>
+                  <td class="center hidden-phone">{{ s.3 }}%</td>
+                  <td class="center hidden-phone">{% widthratio  s.5 1 100 %}%</td>
+                  <td class="center hidden-phone">{% widthratio  s.6 1 100 %}%</td>
+                  <td class="center hidden-phone">{{ s.7|cut:"&"}}</td>
+                  <td class="center hidden-phone">{{ s.8 }}%</td>
+                  <td class="center hidden-phone">{{ s.9}}</td>
+                  <td class="center hidden-phone">{{ s.10|cut:"[" |cut:"]"}} (KB/s)</td>
+                 <td class="center hidden-phone">{{ s.12 }}</td>
+              </tr>{% endfor %}
+              </tbody>
+              </table>
+               </div>
+              </div>
+              </section>
+              </div>
+              </div>
+
+
+
+
+{% endblock %}
+{% block js_file %}
+  <script type="text/javascript" src="{% static 'assets/bootstrap-datepicker/js/bootstrap-datepicker.js' %}"></script>
+  <script type="text/javascript" src="{% static 'assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js' %}"></script>
+  <script type="text/javascript" src="{% static 'assets/bootstrap-daterangepicker/moment.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'assets/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+  <script type="text/javascript" src="{% static 'assets/bootstrap-colorpicker/js/bootstrap-colorpicker.js' %}"></script>
+  <script type="text/javascript" src="{% static 'assets/bootstrap-timepicker/js/bootstrap-timepicker.js' %}"></script>
+    <script src="{% static 'js/jquery-ui-1.9.2.custom.min.js'%}"></script>
+    <script src="{% static 'js/jquery-migrate-1.2.1.min.js'%}"></script>
+     <script type="text/javascript" language="javascript" src="{% static 'assets/advanced-datatable/media/js/jquery.dataTables.js'%}"></script>
+    <script type="text/javascript" src="{% static 'assets/data-tables/DT_bootstrap.js'%}"></script>
+    <script src="{% static 'js/respond.min.js'%}" ></script>
+    <script src="{% static 'js/dynamic_table_init.js'%}"></script>
+{% endblock %}
+{% block added %}
+    <script>
+
+</script>
+{% endblock %}
